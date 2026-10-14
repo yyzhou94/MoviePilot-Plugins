@@ -20,19 +20,5 @@
       "v2.2.7": "修复好学正确获取反馈消息，优化部分站点通知输出样式。",
       "v1.3.0": "感谢@madrays大佬添加喊话反馈功能！"
     }
-  },
-  "farmauto": {
-    "name": "农场自动化",
-    "description": "适配多个站点农场，建议选智能模式，否则你可能会付出贪心的代价",
-    "labels": "站点,农场",
-    "version": "1.1",
-    "author": "bfjy,yyzhou94",
-    "author_url": "https://bfjy2024.github.io/bfjy",
-    "level": 2,
-    "v2": true,
-    "history": {
-      "v1.1": "增加HDClone(hdclone.top)站点农场支持",
-      "v1.0": "首个版本，支持PlayLet、NovaHD、好学、包子站点农场"
-    }
   }
 }
