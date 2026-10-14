@@ -1,0 +1,14 @@
+{
+  "FarmAuto": {
+    "name": "农场自动化",
+    "version": "1.1",
+    "description": "适配多个站点农场，建议选智能模式，否则你可能会付出贪心的代价",
+    "author": "bfjy,yyzhou94",
+    "icon": "Moviepilot_A.png",
+    "level": 2,
+    "history": {
+      "v1.1": "增加HDClone(hdclone.top)站点农场支持",
+      "v1.0": "初始版本"
+    }
+  }
+}
