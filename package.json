@@ -26,7 +26,6 @@
     "description": "适配多个站点农场，建议选智能模式，否则你可能会付出贪心的代价",
     "labels": "站点,农场",
     "version": "1.1",
-    "icon": "https://raw.githubusercontent.com/yyzhou94/MoviePilot-Plugins/main/icons/farm.png",
     "author": "bfjy,yyzhou94",
     "author_url": "https://bfjy2024.github.io/bfjy",
     "level": 2,
