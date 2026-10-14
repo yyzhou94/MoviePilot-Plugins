@@ -32,11 +32,11 @@ class GroupChatZone(_PluginBase):
     # 插件图标
     plugin_icon = "https://raw.githubusercontent.com/KoWming/MoviePilot-Plugins/main/icons/Octopus.png"
     # 插件版本
-    plugin_version = "2.3.3"
+    plugin_version = "2.3.4"
     # 插件作者
-    plugin_author = "KoWming,madrays"
+    plugin_author = "yyzhou94,KoWming,madrays"
     # 作者主页
-    author_url = "https://github.com/KoWming"
+    author_url = "https://github.com/yyzhou94"
     # 插件配置项ID前缀
     plugin_config_prefix = "groupchatzone_"
     # 加载顺序
