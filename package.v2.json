@@ -1,12 +1,13 @@
 {
   "FarmAuto": {
     "name": "农场自动化",
-    "version": "1.2",
+    "version": "1.3",
     "description": "适配多个站点农场，建议选智能模式，否则你可能会付出贪心的代价",
     "author": "bfjy,yyzhou94",
     "icon": "Moviepilot_A.png",
     "level": 2,
     "history": {
+      "v1.3": "农场请求超时由15秒放宽到30秒，避免慢站超时。",
       "v1.2": "新增拾刻(PTSKit, www.ptskit.org)站点农场支持。",
       "v1.1": "增加HDClone(hdclone.top)站点农场支持",
       "v1.0": "首个版本，支持PlayLet、NovaHD、好学、包子站点农场"
