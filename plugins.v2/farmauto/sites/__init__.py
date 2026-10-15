@@ -6,6 +6,7 @@ from .novahd import NovaHDConfig
 from .haoxue import HaoxueConfig
 from .baozi import BaoziConfig
 from .hdclone import HdCloneConfig
+from .ptskit import PtskitConfig
 
 # 所有支持的站点配置
 SITE_CONFIGS: Dict[str, FarmSiteConfig] = {
@@ -14,6 +15,7 @@ SITE_CONFIGS: Dict[str, FarmSiteConfig] = {
     "haoxue": HaoxueConfig(),
     "baozi": BaoziConfig(),
     "hdclone": HdCloneConfig(),
+    "ptskit": PtskitConfig(),
 }
 
 # 站点选项（用于UI多选）
