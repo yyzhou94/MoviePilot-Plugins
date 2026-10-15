@@ -29,7 +29,7 @@ class FarmAuto(_PluginBase):
     plugin_name = "农场自动化"
     plugin_desc = "适配多个站点农场，建议选智能模式，否则你可能会付出贪心的代价"
     plugin_icon = "Moviepilot_A.png"
-    plugin_version = "1.2"
+    plugin_version = "1.3"
     plugin_author = "bfjy,yyzhou94"
     author_url = "https://bfjy2024.github.io/bfjy"
     plugin_config_prefix = "farmauto_"
@@ -733,7 +733,7 @@ class FarmAuto(_PluginBase):
                 site_config.get_farm_url(),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=15,
+                timeout=30,
                 verify=False
             )
 
@@ -768,7 +768,7 @@ class FarmAuto(_PluginBase):
                 site_config.get_farm_url(),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=15,
+                timeout=30,
                 verify=False
             )
             if response.status_code == 200:
@@ -783,7 +783,7 @@ class FarmAuto(_PluginBase):
                 site_config.get_warehouse_url(),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=15,
+                timeout=30,
                 verify=False
             )
 
@@ -804,7 +804,7 @@ class FarmAuto(_PluginBase):
                 site_config.get_harvest_url(item_type, item_id),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=15,
+                timeout=30,
                 verify=False,
                 allow_redirects=True
             )
@@ -828,7 +828,7 @@ class FarmAuto(_PluginBase):
                 url,
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=15,
+                timeout=30,
                 verify=False,
                 allow_redirects=True
             )
@@ -847,7 +847,7 @@ class FarmAuto(_PluginBase):
                 site_config.get_sell_url(sell_key),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=15,
+                timeout=30,
                 verify=False,
                 allow_redirects=True
             )
@@ -866,7 +866,7 @@ class FarmAuto(_PluginBase):
                 site_config.get_harvest_all_url(),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=15,
+                timeout=30,
                 verify=False,
                 allow_redirects=True
             )
