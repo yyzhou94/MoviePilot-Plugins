@@ -9,8 +9,8 @@ from ..utils.config import Config
 # 单次抽奖请求会在服务端连抽最多 100 次(batch<=100)，耗时远超普通请求，
 # 沿用全局默认超时(10s)容易 "Read timed out"，故单独放宽。
 LOTTERY_TIMEOUT = 60
-# 老虎机单次 spin 较快，但站点偶尔卡顿，留一点余量。
-SLOT_TIMEOUT = 30
+# 老虎机单次 spin 较快，10 秒足够(与全局默认一致)。
+SLOT_TIMEOUT = 10
 
 PRIZE_KEYS = ("name", "prize", "prize_name", "title", "reward", "reward_name", "award",
               "award_name", "gift", "gift_name", "content", "text", "description", "prize_type", "type")
