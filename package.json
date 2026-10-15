@@ -20,19 +20,5 @@
       "v2.2.7": "修复好学正确获取反馈消息，优化部分站点通知输出样式。",
       "v1.3.0": "感谢@madrays大佬添加喊话反馈功能！"
     }
-  },
-  "PTAutoTask": {
-    "name": "PT自动任务",
-    "description": "用来执行一些站点的定期任务，包括但不限于签到、喊话、领取任务等;本版本在liuyunfz大佬插件基础上增加了若干其他站点周期性任务领取功能",
-    "labels": "站点",
-    "version": "1.1.9",
-    "icon": "https://raw.githubusercontent.com/liuyunfz/MoviePilot-Plugins/main/icons/ptautotask.png",
-    "author": "liuyunfz,bfjy,yyzhou94",
-    "level": 2,
-    "v2": false,
-    "history": {
-      "v1.1.9": "增加LuckPT(luckpt.de)站点勋章奖励自动领取功能",
-      "v1.1.8": "原版(liuyunfz,bfjy)"
-    }
   }
 }
