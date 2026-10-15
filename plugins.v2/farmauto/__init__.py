@@ -29,7 +29,7 @@ class FarmAuto(_PluginBase):
     plugin_name = "农场自动化"
     plugin_desc = "适配多个站点农场，建议选智能模式，否则你可能会付出贪心的代价"
     plugin_icon = "Moviepilot_A.png"
-    plugin_version = "1.1"
+    plugin_version = "1.2"
     plugin_author = "bfjy,yyzhou94"
     author_url = "https://bfjy2024.github.io/bfjy"
     plugin_config_prefix = "farmauto_"
@@ -321,7 +321,7 @@ class FarmAuto(_PluginBase):
                                         "props": {
                                             "type": "info",
                                             "variant": "tonal",
-                                            "text": "📌 支持站点：PlayLet、NovaHD、好学、包子、HDClone\n"
+                                            "text": "📌 支持站点：PlayLet、NovaHD、好学、包子、HDClone、拾刻(PTSKit)\n"
                                                    "🧠 智能交易：价格高于成本时自动收获→种植/养殖→出售\n"
                                                    "🌾 自动收获：一键收获 → 自动种植/养殖 → 检查仓库按价格出售\n"
                                                    "💡 多站点模式：按顺序依次处理每个选中的站点\n"
