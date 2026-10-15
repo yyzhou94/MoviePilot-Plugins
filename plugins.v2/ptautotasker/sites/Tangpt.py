@@ -4,6 +4,13 @@ import re
 import time
 
 from ..utils.custom_requests import CustomRequests
+from ..utils.config import Config
+
+# 单次抽奖请求会在服务端连抽最多 100 次(batch<=100)，耗时远超普通请求，
+# 沿用全局默认超时(10s)容易 "Read timed out"，故单独放宽。
+LOTTERY_TIMEOUT = 60
+# 老虎机单次 spin 较快，但站点偶尔卡顿，留一点余量。
+SLOT_TIMEOUT = 30
 
 PRIZE_KEYS = ("name", "prize", "prize_name", "title", "reward", "reward_name", "award",
               "award_name", "gift", "gift_name", "content", "text", "description", "prize_type", "type")
@@ -30,18 +37,18 @@ class Tangpt(NexusPHP):
         return super().claim_task(task_id, lambda response: response.json().get("msg", "未知错误"))
 
 
-    def _game_page(self, path):
-        response = CustomRequests.get(self.url + path, headers=self.headers)
+    def _game_page(self, path, timeout=Config.REQUEST_TIMEOUT):
+        response = CustomRequests.get(self.url + path, headers=self.headers, timeout=timeout)
         response.raise_for_status()
         return response.text
 
-    def _game_post(self, path, page, data):
+    def _game_post(self, path, page, data, timeout=Config.REQUEST_TIMEOUT):
         headers = dict(self.headers, referer=self.url + page)
         headers.update({
             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
             "X-Requested-With": "XMLHttpRequest",
         })
-        response = CustomRequests.post(self.url + path, headers=headers, data=data)
+        response = CustomRequests.post(self.url + path, headers=headers, data=data, timeout=timeout)
         response.raise_for_status()
         result = response.json()
         if not isinstance(result, dict) or not isinstance(result.get("ok"), bool):
@@ -49,7 +56,7 @@ class Tangpt(NexusPHP):
         return result
 
     def lottery_remain(self):
-        html = self._game_page("/omnibot_lottery.php")
+        html = self._game_page("/omnibot_lottery.php", timeout=LOTTERY_TIMEOUT)
         match = re.search(r"今天还可以抽\s*(\d+)\s*次", html)
         if not match:
             raise ValueError("无法读取今日剩余抽奖次数，请检查Cookie")
@@ -79,11 +86,12 @@ class Tangpt(NexusPHP):
         raise ValueError("无法获取老虎机spin_token，请检查Cookie")
 
     def draw_lottery(self, count):
-        return self._game_post("/web/omnibot/lottery/draw", "/omnibot_lottery.php", {"count": str(count)})
+        return self._game_post("/web/omnibot/lottery/draw", "/omnibot_lottery.php", {"count": str(count)},
+                               timeout=LOTTERY_TIMEOUT)
 
     def draw_slot(self, token):
         return self._game_post("/web/omnibot/slot-machine/draw", "/omnibot_slot.php",
-                               {"multiplier": "1", "spin_token": token})
+                               {"multiplier": "1", "spin_token": token}, timeout=SLOT_TIMEOUT)
 
 
 class Tasks(BaseTask):
