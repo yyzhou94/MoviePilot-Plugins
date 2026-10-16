@@ -12,7 +12,7 @@
 |---|---|---|---|---|---|
 | GroupChatZone | 群聊区 | 2.3.4 | `plugins/groupchatzone/` | 根 `package.json` | yyzhou94, KoWming, madrays |
 | FarmAuto | 农场自动化 | 1.3 | `plugins.v2/farmauto/` | `package.v2.json` | bfjy, yyzhou94 |
-| PTAutoTasker | PT自动任务助手 | 1.3.0 | `plugins.v2/ptautotasker/` | `package.v2.json` | tmzg0000, yyzhou94 |
+| PTAutoTasker | PT自动任务助手 | 1.4.0 | `plugins.v2/ptautotasker/` | `package.v2.json` | tmzg0000, yyzhou94 |
 
 ---
 
@@ -65,7 +65,7 @@
 
 ---
 
-### 3. PT自动任务助手（PTAutoTasker）v1.3.0
+### 3. PT自动任务助手（PTAutoTasker）v1.4.0
 PT 站点**任务领取 / 福利兑换 / 游戏 / 自动刮奖**助手，支持 18 个站点共 23 个任务。
 
 > ⚠️ 本插件为 **v2 插件**，需要 MoviePilot `system_version >= 2.0.0, < 3.0.0`。
@@ -87,9 +87,9 @@ PT 站点**任务领取 / 福利兑换 / 游戏 / 自动刮奖**助手，支持 
 | 织梦 | 勋章奖励 |
 | CARPT / Vc-Lib | 任务领取 / 每周上传 + 每周魔力值 |
 
-**相对上游改动（1.2.9 / 1.3.0）**：
-- 修复站点请求默认**超时过短**：全局 `REQUEST_TIMEOUT` 由 `5` 秒 → **`10`** 秒（PT 站常因 Cloudflare + DB 查询超过 5s 导致 `Read timed out`）。
-- 躺平**抽奖请求单独放宽至 60 秒**（单次请求服务端连抽最多 100 次，耗时较长）；老虎机保持 10 秒。
+**相对上游改动（1.2.9 ~ 1.4.0）**：
+- 修复站点请求默认**超时过短**：全局 `REQUEST_TIMEOUT` 由 `5` 秒 → **10 秒 → 30 秒**（PT 站常因 Cloudflare + DB 查询超时）。
+- 躺平**抽奖请求单独放宽至 120 秒**（单次请求服务端连抽最多 100 次，耗时较长）；老虎机 30 秒。
 
 ---
 
