@@ -6,10 +6,13 @@ import time
 from ..utils.custom_requests import CustomRequests
 from ..utils.config import Config
 
-# 单次抽奖请求会在服务端连抽最多 100 次(batch<=100)，耗时远超普通请求，
-# 站点繁忙时 60s 仍可能不够，放宽到 120 秒。
-LOTTERY_TIMEOUT = 120
-# 老虎机单次 spin 较快，跟随全局默认(30 秒)。
+# 单次抽奖请求会在服务端连抽 batch 次，耗时随batch 线性增长。
+# 站点繁忙时(跨境线路首包可达 15s+)批量 100 极易触发读取超时，
+# 故把批量降到 25，单请求耗时约为 1/4，总耗时基本不变但每批都能跑完。
+LOTTERY_BATCH = 25
+# 抽奖请求超时长：批量小后不必再给到 120s，60s 足够完成一批 25 次。
+LOTTERY_TIMEOUT = 60
+# 老虎机单次 spin 较快，跟随全局默认。
 SLOT_TIMEOUT = 30
 
 PRIZE_KEYS = ("name", "prize", "prize_name", "title", "reward", "reward_name", "award",
@@ -102,7 +105,7 @@ class Tasks(BaseTask):
     def daily_claim_task(self):
         return "\n".join((self.client.claim_task("3"), self.client.claim_task("4")))
 
-    @task_info(label="躺平每日1000次抽奖", hint="最多抽奖1000次，按今日剩余次数执行；每批最多100次，间隔1秒，失败停止")
+    @task_info(label="躺平每日1000次抽奖", hint="最多抽奖1000次，按今日剩余次数执行；每批25次，间隔1秒，失败停止")
     def daily_lottery(self):
         stats = {"count": 0, "prizes": {}}
 
@@ -122,7 +125,7 @@ class Tasks(BaseTask):
             while stats["count"] < total:
                 if stats["count"]:
                     time.sleep(1)
-                batch = min(100, total - stats["count"])
+                batch = min(LOTTERY_BATCH, total - stats["count"])
                 result = self.client.draw_lottery(batch)
                 if not result["ok"]:
                     return self.fail(message=f"{summary()}；已停止：{result.get('msg') or result.get('message') or '未知错误'}", data=stats)
