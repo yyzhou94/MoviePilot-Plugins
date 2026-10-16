@@ -49,7 +49,7 @@ def _is_retryable(exc: Exception) -> bool:
 def request(method: str, url: str, headers=None, cookies=None, params=None, data=None,
             timeout=(CONNECT_TIMEOUT, READ_TIMEOUT), retries: int = RETRY_TIMES,
             retry_backoff: float = RETRY_BACKOFF, verify: bool = False,
-            pool_size: int = POOL_SIZE):
+            allow_redirects: bool = True, pool_size: int = POOL_SIZE):
     """统一的带重试请求入口。返回 requests.Response。"""
     sess = get_session(pool_size)
     tmo = tuple(timeout) if isinstance(timeout, (tuple, list)) else (CONNECT_TIMEOUT, float(timeout))
@@ -58,7 +58,8 @@ def request(method: str, url: str, headers=None, cookies=None, params=None, data
     for attempt in range(1, max(1, int(retries)) + 2):
         try:
             resp = sess.request(method, url, headers=headers, cookies=cookies,
-                                params=params, data=data, timeout=tmo, verify=verify)
+                                params=params, data=data, timeout=tmo, verify=verify,
+                                allow_redirects=allow_redirects)
             # 5xx 视为瞬时故障可重试；4xx 直接返回交由业务处理
             if resp.status_code >= 500 and attempt <= retries:
                 last_exc = requests.exceptions.HTTPError(f"HTTP {resp.status_code}")
