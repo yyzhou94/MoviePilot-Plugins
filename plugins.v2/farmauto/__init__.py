@@ -11,6 +11,8 @@ import urllib3
 from apscheduler.triggers.interval import IntervalTrigger
 from urllib3.exceptions import InsecureRequestWarning
 
+from . import net_util
+
 from app.core.event import Event, eventmanager
 from app.db.site_oper import SiteOper
 from app.log import logger
@@ -29,7 +31,7 @@ class FarmAuto(_PluginBase):
     plugin_name = "农场自动化"
     plugin_desc = "适配多个站点农场，建议选智能模式，否则你可能会付出贪心的代价"
     plugin_icon = "Moviepilot_A.png"
-    plugin_version = "1.3"
+    plugin_version = "1.4"
     plugin_author = "bfjy,yyzhou94"
     author_url = "https://bfjy2024.github.io/bfjy"
     plugin_config_prefix = "farmauto_"
@@ -729,11 +731,11 @@ class FarmAuto(_PluginBase):
     
     def __fetch_farm_page(self, cookie: str, site_config: FarmSiteConfig) -> Optional[Dict[str, Any]]:
         try:
-            response = requests.get(
+            response = net_util.get(
                 site_config.get_farm_url(),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=30,
+                timeout=(net_util.CONNECT_TIMEOUT, net_util.READ_TIMEOUT),
                 verify=False
             )
 
@@ -759,16 +761,16 @@ class FarmAuto(_PluginBase):
             logger.error(f"{site_config.site_name} 获取农场页面超时")
             return None
         except Exception as e:
-            logger.error(f"{site_config.site_name} 获取农场页面异常：{e}")
+            logger.error(f"{site_config.site_name} 获取农场页面异常：{net_util.describe_error(e)}")
             return None
 
     def __fetch_farm_page_html(self, cookie: str, site_config: FarmSiteConfig) -> Optional[str]:
         try:
-            response = requests.get(
+            response = net_util.get(
                 site_config.get_farm_url(),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=30,
+                timeout=(net_util.CONNECT_TIMEOUT, net_util.READ_TIMEOUT),
                 verify=False
             )
             if response.status_code == 200:
@@ -779,11 +781,11 @@ class FarmAuto(_PluginBase):
 
     def __fetch_warehouse(self, cookie: str, site_config: FarmSiteConfig) -> List[Dict[str, Any]]:
         try:
-            response = requests.get(
+            response = net_util.get(
                 site_config.get_warehouse_url(),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=30,
+                timeout=(net_util.CONNECT_TIMEOUT, net_util.READ_TIMEOUT),
                 verify=False
             )
 
@@ -793,18 +795,18 @@ class FarmAuto(_PluginBase):
             return site_config.parse_warehouse_items(response.text)
 
         except Exception as e:
-            logger.error(f"{site_config.site_name} 获取仓库信息异常：{e}")
+            logger.error(f"{site_config.site_name} 获取仓库信息异常：{net_util.describe_error(e)}")
             return []
 
     # ==================== 执行操作 ====================
     
     def __do_harvest(self, cookie: str, site_config: FarmSiteConfig, item_type: str, item_id: int) -> Dict[str, Any]:
         try:
-            response = requests.get(
+            response = net_util.get(
                 site_config.get_harvest_url(item_type, item_id),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=30,
+                timeout=(net_util.CONNECT_TIMEOUT, net_util.READ_TIMEOUT),
                 verify=False,
                 allow_redirects=True
             )
@@ -815,7 +817,7 @@ class FarmAuto(_PluginBase):
             return site_config.parse_harvest_result(response.text)
 
         except Exception as e:
-            return {"success": False, "message": str(e)}
+            return {"success": False, "message": net_util.describe_error(e)}
 
     def __do_plant(self, cookie: str, site_config: FarmSiteConfig, item_type: str, item_id: int, action: str = "plant") -> Dict[str, Any]:
         try:
@@ -824,11 +826,11 @@ class FarmAuto(_PluginBase):
             else:
                 url = site_config.get_plant_url(item_type, item_id)
             
-            response = requests.get(
+            response = net_util.get(
                 url,
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=30,
+                timeout=(net_util.CONNECT_TIMEOUT, net_util.READ_TIMEOUT),
                 verify=False,
                 allow_redirects=True
             )
@@ -839,15 +841,15 @@ class FarmAuto(_PluginBase):
             return site_config.parse_plant_result(response.text, action)
 
         except Exception as e:
-            return {"success": False, "message": str(e)}
+            return {"success": False, "message": net_util.describe_error(e)}
 
     def __do_sell(self, cookie: str, site_config: FarmSiteConfig, sell_key: str) -> Dict[str, Any]:
         try:
-            response = requests.get(
+            response = net_util.get(
                 site_config.get_sell_url(sell_key),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=30,
+                timeout=(net_util.CONNECT_TIMEOUT, net_util.READ_TIMEOUT),
                 verify=False,
                 allow_redirects=True
             )
@@ -858,15 +860,15 @@ class FarmAuto(_PluginBase):
             return site_config.parse_sell_result(response.text)
 
         except Exception as e:
-            return {"success": False, "message": str(e)}
+            return {"success": False, "message": net_util.describe_error(e)}
 
     def __do_harvest_all(self, cookie: str, site_config: FarmSiteConfig) -> Dict[str, Any]:
         try:
-            response = requests.get(
+            response = net_util.get(
                 site_config.get_harvest_all_url(),
                 headers=self.__get_headers(),
                 cookies=self.__cookie_to_dict(cookie),
-                timeout=30,
+                timeout=(net_util.CONNECT_TIMEOUT, net_util.READ_TIMEOUT),
                 verify=False,
                 allow_redirects=True
             )
@@ -880,7 +882,7 @@ class FarmAuto(_PluginBase):
             return {"success": False, "message": "一键收获失败"}
 
         except Exception as e:
-            return {"success": False, "message": str(e)}
+            return {"success": False, "message": net_util.describe_error(e)}
 
     # ==================== 模式运行 ====================
     
