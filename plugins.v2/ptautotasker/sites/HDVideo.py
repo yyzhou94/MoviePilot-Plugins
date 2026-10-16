@@ -23,7 +23,10 @@ class HDVideo(NexusPHP):
         url = self.url + "/games/scratch/"
         headers = dict(self.headers, referer=url)
         headers["Content-Type"] = "application/x-www-form-urlencoded"
-        response = CustomRequests.post(url, headers=headers, data={"action": "buy"})
+        headers["X-Requested-With"] = "XMLHttpRequest"
+        # 分阶段超时 + 2次重试：跨境线路抖动时单次购买更稳
+        response = CustomRequests.post(url, headers=headers, data={"action": "buy"},
+                                       timeout=(10, 30))
         response.raise_for_status()
         result = response.json()
         if not isinstance(result, dict) or not isinstance(result.get("ok"), bool):
