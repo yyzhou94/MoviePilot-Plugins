@@ -11,7 +11,7 @@
 | 插件 | 名称 | 版本 | 代码目录 | 登记于 | 作者 |
 |---|---|---|---|---|---|
 | GroupChatZone | 群聊区 | 2.3.4 | `plugins/groupchatzone/` | 根 `package.json` | yyzhou94, KoWming, madrays |
-| FarmAuto | 农场自动化 | 1.3 | `plugins.v2/farmauto/` | `package.v2.json` | bfjy, yyzhou94 |
+| FarmAuto | 农场自动化 | 1.4 | `plugins.v2/farmauto/` | `package.v2.json` | bfjy, yyzhou94 |
 | PTAutoTasker | PT自动任务助手 | 1.4.0 | `plugins.v2/ptautotasker/` | `package.v2.json` | tmzg0000, yyzhou94 |
 
 ---
@@ -51,7 +51,7 @@
 
 ---
 
-### 2. 农场自动化（FarmAuto）v1.3
+### 2. 农场自动化（FarmAuto）v1.4
 适配多个站点的魔法农场，支持自动收获与智能交易。
 
 **支持站点**：PlayLet、NovaHD、好学、包子、HDClone、**拾刻(PTSKit)**。
@@ -59,7 +59,7 @@
 **相对上游改动**：
 - 新增 **拾刻（PTSKit，`www.ptskit.org`）** 农场支持。农场页为 `magic_farm.php`，货币=魔力，农作物有 20% 概率双倍收获。
 - 新增 **HDClone**（`pt.hdclone.top`）农场支持。农场页为定制版 `magic_farm.php`，作物/动物与默认不同，已按其 16 项（8 作物 + 8 动物）单独适配。
-- 农场请求超时由 **15 秒放宽到 30 秒**，避免慢站超时。
+- 农场请求超时由 **15 秒放宽到 30 秒**；后续升级为**连接/读取分阶段超时 + 连接复用 + 自动重试**，并细化错误提示（区分连接超时/读取超时/DNS 失败）。
 
 > 注意：HDClone 与拾刻的**出售 key 格式**按 `crop_1`/`animal_N` 兜底假设，若出售失败请反馈对应仓库页 HTML。
 
